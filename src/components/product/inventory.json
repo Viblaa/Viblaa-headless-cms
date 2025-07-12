@@ -1,0 +1,87 @@
+{
+  "collectionName": "components_product_inventories",
+  "info": {
+    "displayName": "Product Inventory",
+    "description": "Inventory management for products"
+  },
+  "options": {},
+  "attributes": {
+    "track_inventory": {
+      "type": "boolean",
+      "default": true
+    },
+    "stock_quantity": {
+      "type": "integer",
+      "default": 0,
+      "min": 0,
+      "visible": {
+        "track_inventory": {
+          "$eq": true
+        }
+      }
+    },
+    "reserved_quantity": {
+      "type": "integer",
+      "default": 0,
+      "min": 0,
+      "visible": {
+        "track_inventory": {
+          "$eq": true
+        }
+      }
+    },
+    "low_stock_threshold": {
+      "type": "integer",
+      "default": 10,
+      "min": 0,
+      "visible": {
+        "track_inventory": {
+          "$eq": true
+        }
+      }
+    },
+    "allow_backorders": {
+      "type": "boolean",
+      "default": false,
+      "visible": {
+        "track_inventory": {
+          "$eq": true
+        }
+      }
+    },
+    "backorder_message": {
+      "type": "text",
+      "visible": {
+        "allow_backorders": {
+          "$eq": true
+        }
+      }
+    },
+    "stock_status": {
+      "type": "enumeration",
+      "enum": ["in_stock", "low_stock", "out_of_stock", "on_backorder"],
+      "default": "in_stock",
+      "visible": {
+        "track_inventory": {
+          "$eq": true
+        }
+      }
+    },
+    "warehouse_location": {
+      "type": "string",
+      "visible": {
+        "track_inventory": {
+          "$eq": true
+        }
+      }
+    },
+    "supplier_sku": {
+      "type": "string",
+      "visible": {
+        "track_inventory": {
+          "$eq": true
+        }
+      }
+    }
+  }
+}

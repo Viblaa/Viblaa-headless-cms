@@ -110,7 +110,12 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["files"]
+      "allowedTypes": ["files"],
+      "visible": {
+        "is_verified_creator": {
+          "$eq": true
+        }
+      }
     },
     "portfolio": {
       "type": "json"
@@ -122,11 +127,19 @@
     },
     "bank_details": {
       "type": "json",
-      "private": true
+      "visible": {
+        "status": {
+          "$eq": "approved"
+        }
+      }
     },
     "tax_information": {
       "type": "json",
-      "private": true
+      "visible": {
+        "status": {
+          "$eq": "approved"
+        }
+      }
     },
     "content_guidelines": {
       "type": "richtext"
@@ -147,6 +160,12 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "influencer"
     }
   }
 }

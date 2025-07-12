@@ -1,0 +1,71 @@
+{
+  "collectionName": "components_product_pricing_slabs",
+  "info": {
+    "displayName": "Pricing Slab",
+    "description": "Quantity-based pricing tiers for bulk purchases"
+  },
+  "options": {},
+  "attributes": {
+    "min_quantity": {
+      "type": "integer",
+      "required": true,
+      "min": 1
+    },
+    "max_quantity": {
+      "type": "integer",
+      "min": 1
+    },
+    "price": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "discount_percentage": {
+      "type": "decimal",
+      "min": 0,
+      "max": 100,
+      "visible": {
+        "price": {
+          "$lt": 999999
+        }
+      }
+    },
+    "discount_amount": {
+      "type": "decimal",
+      "min": 0,
+      "visible": {
+        "price": {
+          "$lt": 999999
+        }
+      }
+    },
+    "tier_name": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 255
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "valid_from": {
+      "type": "datetime",
+      "visible": {
+        "is_active": {
+          "$eq": true
+        }
+      }
+    },
+    "valid_until": {
+      "type": "datetime",
+      "visible": {
+        "is_active": {
+          "$eq": true
+        }
+      }
+    }
+  }
+}

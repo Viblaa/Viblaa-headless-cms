@@ -92,15 +92,29 @@
     },
     "business_license": {
       "type": "string",
-      "maxLength": 50
+      "maxLength": 50,
+      "visible": {
+        "verification_status": {
+          "$in": ["verified", "pending"]
+        }
+      }
     },
     "tax_id": {
       "type": "string",
-      "maxLength": 50
+      "maxLength": 50,
+      "visible": {
+        "verification_status": {
+          "$in": ["verified", "pending"]
+        }
+      }
     },
     "bank_details": {
       "type": "json",
-      "private": true
+      "visible": {
+        "status": {
+          "$eq": "approved"
+        }
+      }
     },
     "is_featured": {
       "type": "boolean",
@@ -119,6 +133,12 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "vendor"
     }
   }
 }

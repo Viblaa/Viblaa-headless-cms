@@ -1,0 +1,291 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": "Global ecommerce product with slab pricing and vendor-influencer commission system"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "short_description": {
+      "type": "text",
+      "maxLength": 500
+    },
+    "sku": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 50
+    },
+    "barcode": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "brand": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "model": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "base_price": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "compare_at_price": {
+      "type": "decimal",
+      "min": 0
+    },
+    "cost_price": {
+      "type": "decimal",
+      "min": 0
+    },
+    "currency": {
+      "type": "enumeration",
+      "enum": ["USD", "EUR", "GBP", "INR", "JPY", "CAD", "AUD", "CNY", "BRL", "MXN"],
+      "default": "USD",
+      "required": true
+    },
+    "slab_pricing": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.pricing-slab"
+    },
+    "product_type": {
+      "type": "enumeration",
+      "enum": ["physical", "digital", "service", "subscription", "bundle"],
+      "default": "physical",
+      "required": true
+    },
+    "product_status": {
+      "type": "enumeration",
+      "enum": ["draft", "active", "inactive", "out_of_stock", "discontinued"],
+      "default": "draft",
+      "required": true
+    },
+    "visibility": {
+      "type": "enumeration",
+      "enum": ["public", "private", "hidden"],
+      "default": "public"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "weight": {
+      "type": "decimal",
+      "min": 0,
+      "visible": {
+        "product_type": {
+          "$in": ["physical"]
+        }
+      }
+    },
+    "weight_unit": {
+      "type": "enumeration",
+      "enum": ["kg", "g", "lb", "oz"],
+      "default": "kg",
+      "visible": {
+        "product_type": {
+          "$in": ["physical"]
+        }
+      }
+    },
+    "dimensions": {
+      "type": "component",
+      "repeatable": false,
+      "component": "product.dimensions",
+      "visible": {
+        "product_type": {
+          "$in": ["physical"]
+        }
+      }
+    },
+    "inventory": {
+      "type": "component",
+      "repeatable": false,
+      "component": "product.inventory",
+      "visible": {
+        "product_type": {
+          "$in": ["physical"]
+        }
+      }
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::category.category",
+      "inversedBy": "products"
+    },
+    "tags": {
+      "type": "json"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "videos": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["videos"]
+    },
+    "documents": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["files"]
+    },
+    "variants": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.variant"
+    },
+    "attributes": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.attribute"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    },
+    "created_by_type": {
+      "type": "enumeration",
+      "enum": ["vendor", "influencer"],
+      "required": true
+    },
+    "vendor": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::vendor.vendor",
+      "inversedBy": "products"
+    },
+    "influencer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::influencer.influencer",
+      "inversedBy": "products"
+    },
+    "original_product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "linked_products",
+      "visible": {
+        "created_by_type": {
+          "$eq": "influencer"
+        }
+      }
+    },
+    "linked_products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "original_product",
+      "visible": {
+        "created_by_type": {
+          "$eq": "vendor"
+        }
+      }
+    },
+    "influencer_commission_rate": {
+      "type": "decimal",
+      "min": 0,
+      "max": 50,
+      "default": 10,
+      "visible": {
+        "created_by_type": {
+          "$eq": "vendor"
+        }
+      }
+    },
+    "commission_settings": {
+      "type": "component",
+      "repeatable": false,
+      "component": "product.commission-settings",
+      "visible": {
+        "created_by_type": {
+          "$eq": "vendor"
+        }
+      }
+    },
+    "shipping": {
+      "type": "component",
+      "repeatable": false,
+      "component": "product.shipping",
+      "visible": {
+        "product_type": {
+          "$in": ["physical"]
+        }
+      }
+    },
+    "reviews_enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "average_rating": {
+      "type": "decimal",
+      "min": 0,
+      "max": 5,
+      "default": 0
+    },
+    "total_reviews": {
+      "type": "integer",
+      "default": 0
+    },
+    "total_sales": {
+      "type": "integer",
+      "default": 0
+    },
+    "total_revenue": {
+      "type": "decimal",
+      "default": 0
+    },
+    "launch_date": {
+      "type": "datetime"
+    },
+    "end_of_life_date": {
+      "type": "datetime"
+    },
+    "compliance": {
+      "type": "component",
+      "repeatable": false,
+      "component": "product.compliance"
+    },
+    "localization": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.localization"
+    },
+    "marketing": {
+      "type": "component",
+      "repeatable": false,
+      "component": "product.marketing"
+    }
+  }
+}

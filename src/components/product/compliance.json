@@ -1,0 +1,48 @@
+{
+  "collectionName": "components_product_compliance",
+  "info": {
+    "displayName": "Product Compliance",
+    "description": "Regulatory and compliance information for global sales"
+  },
+  "options": {},
+  "attributes": {
+    "certifications": {
+      "type": "json"
+    },
+    "safety_warnings": {
+      "type": "richtext"
+    },
+    "age_restriction": {
+      "type": "integer",
+      "min": 0
+    },
+    "country_restrictions": {
+      "type": "json"
+    },
+    "regulatory_approvals": {
+      "type": "json"
+    },
+    "ingredients": {
+      "type": "richtext"
+    },
+    "allergens": {
+      "type": "json"
+    },
+    "recyclable": {
+      "type": "boolean",
+      "default": false
+    },
+    "eco_friendly": {
+      "type": "boolean",
+      "default": false
+    },
+    "organic": {
+      "type": "boolean",
+      "default": false
+    },
+    "fair_trade": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

@@ -526,7 +526,7 @@ export interface ApiBuyerBuyer extends Struct.CollectionTypeSchema {
       Schema.Attribute.DefaultTo<false>;
     newsletter_subscribed: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
-    payment_methods: Schema.Attribute.JSON & Schema.Attribute.Private;
+    payment_methods: Schema.Attribute.JSON;
     phone: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 20;
@@ -571,6 +571,7 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
+    products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID;
     updatedAt: Schema.Attribute.DateTime;
@@ -626,7 +627,7 @@ export interface ApiInfluencerInfluencer extends Struct.CollectionTypeSchema {
     address: Schema.Attribute.Component<'shared.address', false>;
     audience_demographics: Schema.Attribute.JSON;
     availability_schedule: Schema.Attribute.JSON;
-    bank_details: Schema.Attribute.JSON & Schema.Attribute.Private;
+    bank_details: Schema.Attribute.JSON;
     bio: Schema.Attribute.RichText;
     blacklisted_brands: Schema.Attribute.JSON;
     collaboration_rates: Schema.Attribute.JSON;
@@ -672,6 +673,7 @@ export interface ApiInfluencerInfluencer extends Struct.CollectionTypeSchema {
       }>;
     portfolio: Schema.Attribute.JSON;
     preferred_brands: Schema.Attribute.JSON;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     profile_picture: Schema.Attribute.Media<'images'>;
     publishedAt: Schema.Attribute.DateTime;
     rating: Schema.Attribute.Decimal &
@@ -689,7 +691,7 @@ export interface ApiInfluencerInfluencer extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'pending'>;
-    tax_information: Schema.Attribute.JSON & Schema.Attribute.Private;
+    tax_information: Schema.Attribute.JSON;
     total_earnings: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -713,6 +715,174 @@ export interface ApiInfluencerInfluencer extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiProductProduct extends Struct.CollectionTypeSchema {
+  collectionName: 'products';
+  info: {
+    description: 'Global ecommerce product with slab pricing and vendor-influencer commission system';
+    displayName: 'Product';
+    pluralName: 'products';
+    singularName: 'product';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    attributes: Schema.Attribute.Component<'product.attribute', true>;
+    average_rating: Schema.Attribute.Decimal &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
+    barcode: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 50;
+      }>;
+    base_price: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    brand: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    categories: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::category.category'
+    >;
+    commission_settings: Schema.Attribute.Component<
+      'product.commission-settings',
+      false
+    >;
+    compare_at_price: Schema.Attribute.Decimal &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    compliance: Schema.Attribute.Component<'product.compliance', false>;
+    cost_price: Schema.Attribute.Decimal &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    created_by_type: Schema.Attribute.Enumeration<['vendor', 'influencer']> &
+      Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    currency: Schema.Attribute.Enumeration<
+      ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'CAD', 'AUD', 'CNY', 'BRL', 'MXN']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'USD'>;
+    description: Schema.Attribute.RichText & Schema.Attribute.Required;
+    dimensions: Schema.Attribute.Component<'product.dimensions', false>;
+    documents: Schema.Attribute.Media<'files', true>;
+    end_of_life_date: Schema.Attribute.DateTime;
+    featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    images: Schema.Attribute.Media<'images', true>;
+    influencer: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::influencer.influencer'
+    >;
+    influencer_commission_rate: Schema.Attribute.Decimal &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 50;
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<10>;
+    inventory: Schema.Attribute.Component<'product.inventory', false>;
+    launch_date: Schema.Attribute.DateTime;
+    linked_products: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product.product'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localization: Schema.Attribute.Component<'product.localization', true>;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product.product'
+    > &
+      Schema.Attribute.Private;
+    marketing: Schema.Attribute.Component<'product.marketing', false>;
+    model: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 255;
+      }>;
+    original_product: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::product.product'
+    >;
+    product_status: Schema.Attribute.Enumeration<
+      ['draft', 'active', 'inactive', 'out_of_stock', 'discontinued']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'draft'>;
+    product_type: Schema.Attribute.Enumeration<
+      ['physical', 'digital', 'service', 'subscription', 'bundle']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'physical'>;
+    publishedAt: Schema.Attribute.DateTime;
+    reviews_enabled: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    shipping: Schema.Attribute.Component<'product.shipping', false>;
+    short_description: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 500;
+      }>;
+    sku: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 50;
+      }>;
+    slab_pricing: Schema.Attribute.Component<'product.pricing-slab', true>;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    tags: Schema.Attribute.JSON;
+    total_revenue: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
+    total_reviews: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    total_sales: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    variants: Schema.Attribute.Component<'product.variant', true>;
+    vendor: Schema.Attribute.Relation<'manyToOne', 'api::vendor.vendor'>;
+    videos: Schema.Attribute.Media<'videos', true>;
+    visibility: Schema.Attribute.Enumeration<['public', 'private', 'hidden']> &
+      Schema.Attribute.DefaultTo<'public'>;
+    weight: Schema.Attribute.Decimal &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    weight_unit: Schema.Attribute.Enumeration<['kg', 'g', 'lb', 'oz']> &
+      Schema.Attribute.DefaultTo<'kg'>;
+  };
+}
+
 export interface ApiVendorVendor extends Struct.CollectionTypeSchema {
   collectionName: 'vendors';
   info: {
@@ -726,7 +896,7 @@ export interface ApiVendorVendor extends Struct.CollectionTypeSchema {
   };
   attributes: {
     address: Schema.Attribute.Component<'shared.address', false>;
-    bank_details: Schema.Attribute.JSON & Schema.Attribute.Private;
+    bank_details: Schema.Attribute.JSON;
     banner_image: Schema.Attribute.Media<'images'>;
     business_hours: Schema.Attribute.JSON;
     business_license: Schema.Attribute.String &
@@ -765,6 +935,7 @@ export interface ApiVendorVendor extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 20;
       }>;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     rating: Schema.Attribute.Decimal &
       Schema.Attribute.SetMinMax<
@@ -1327,6 +1498,7 @@ declare module '@strapi/strapi' {
       'api::category.category': ApiCategoryCategory;
       'api::global.global': ApiGlobalGlobal;
       'api::influencer.influencer': ApiInfluencerInfluencer;
+      'api::product.product': ApiProductProduct;
       'api::vendor.vendor': ApiVendorVendor;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

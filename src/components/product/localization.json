@@ -1,0 +1,39 @@
+{
+  "collectionName": "components_product_localizations",
+  "info": {
+    "displayName": "Product Localization",
+    "description": "Localized content for different markets and languages"
+  },
+  "options": {},
+  "attributes": {
+    "locale": {
+      "type": "string",
+      "required": true,
+      "maxLength": 10
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "short_description": {
+      "type": "text"
+    },
+    "currency": {
+      "type": "string",
+      "maxLength": 3
+    },
+    "price": {
+      "type": "decimal",
+      "min": 0
+    },
+    "keywords": {
+      "type": "json"
+    },
+    "market_specific_info": {
+      "type": "json"
+    }
+  }
+}

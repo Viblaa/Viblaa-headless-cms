@@ -1,0 +1,60 @@
+{
+  "collectionName": "components_product_variants",
+  "info": {
+    "displayName": "Product Variant",
+    "description": "Product variations like size, color, material etc."
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255
+    },
+    "sku": {
+      "type": "string",
+      "required": true,
+      "maxLength": 50
+    },
+    "price": {
+      "type": "decimal",
+      "min": 0
+    },
+    "compare_at_price": {
+      "type": "decimal",
+      "min": 0
+    },
+    "cost_price": {
+      "type": "decimal",
+      "min": 0
+    },
+    "weight": {
+      "type": "decimal",
+      "min": 0
+    },
+    "barcode": {
+      "type": "string"
+    },
+    "stock_quantity": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    },
+    "is_default": {
+      "type": "boolean",
+      "default": false
+    },
+    "variant_options": {
+      "type": "json"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images"]
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

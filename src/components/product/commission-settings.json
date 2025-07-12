@@ -1,0 +1,55 @@
+{
+  "collectionName": "components_product_commission_settings",
+  "info": {
+    "displayName": "Influencer Commission Settings",
+    "description": "Commission settings for influencers selling vendor products"
+  },
+  "options": {},
+  "attributes": {
+    "commission_rate": {
+      "type": "decimal",
+      "min": 0,
+      "max": 50,
+      "default": 10,
+      "visible": {
+        "commission_type": {
+          "$eq": "percentage"
+        }
+      }
+    },
+    "commission_type": {
+      "type": "enumeration",
+      "enum": ["percentage", "fixed_amount"],
+      "default": "percentage"
+    },
+    "fixed_amount": {
+      "type": "decimal",
+      "min": 0,
+      "visible": {
+        "commission_type": {
+          "$eq": "fixed_amount"
+        }
+      }
+    },
+    "minimum_sale_amount": {
+      "type": "decimal",
+      "min": 0,
+      "default": 0
+    },
+    "special_commission_rate": {
+      "type": "decimal",
+      "min": 0,
+      "max": 50
+    },
+    "special_rate_valid_from": {
+      "type": "datetime"
+    },
+    "special_rate_valid_until": {
+      "type": "datetime"
+    },
+    "is_commission_enabled": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

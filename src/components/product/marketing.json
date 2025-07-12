@@ -1,0 +1,52 @@
+{
+  "collectionName": "components_product_marketing",
+  "info": {
+    "displayName": "Product Marketing",
+    "description": "Marketing and promotional settings for products"
+  },
+  "options": {},
+  "attributes": {
+    "promotional_text": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "badge_text": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "badge_color": {
+      "type": "string",
+      "maxLength": 7
+    },
+    "sale_price": {
+      "type": "decimal",
+      "min": 0
+    },
+    "sale_start_date": {
+      "type": "datetime"
+    },
+    "sale_end_date": {
+      "type": "datetime"
+    },
+    "cross_sell_products": {
+      "type": "json"
+    },
+    "upsell_products": {
+      "type": "json"
+    },
+    "related_products": {
+      "type": "json"
+    },
+    "marketing_tags": {
+      "type": "json"
+    },
+    "social_sharing_enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "affiliate_program_eligible": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

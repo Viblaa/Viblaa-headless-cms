@@ -1,0 +1,105 @@
+{
+  "collectionName": "components_product_shipping",
+  "info": {
+    "displayName": "Product Shipping",
+    "description": "Shipping configuration for products"
+  },
+  "options": {},
+  "attributes": {
+    "requires_shipping": {
+      "type": "boolean",
+      "default": true
+    },
+    "shipping_class": {
+      "type": "enumeration",
+      "enum": ["standard", "express", "overnight", "freight", "digital"],
+      "default": "standard",
+      "visible": {
+        "requires_shipping": {
+          "$eq": true
+        }
+      }
+    },
+    "shipping_cost": {
+      "type": "decimal",
+      "min": 0,
+      "visible": {
+        "requires_shipping": {
+          "$eq": true
+        }
+      }
+    },
+    "free_shipping_threshold": {
+      "type": "decimal",
+      "min": 0,
+      "visible": {
+        "requires_shipping": {
+          "$eq": true
+        }
+      }
+    },
+    "handling_time": {
+      "type": "integer",
+      "min": 0,
+      "default": 1,
+      "visible": {
+        "requires_shipping": {
+          "$eq": true
+        }
+      }
+    },
+    "handling_time_unit": {
+      "type": "enumeration",
+      "enum": ["hours", "days", "weeks"],
+      "default": "days",
+      "visible": {
+        "requires_shipping": {
+          "$eq": true
+        }
+      }
+    },
+    "shipping_zones": {
+      "type": "json",
+      "visible": {
+        "requires_shipping": {
+          "$eq": true
+        }
+      }
+    },
+    "restricted_countries": {
+      "type": "json",
+      "visible": {
+        "requires_shipping": {
+          "$eq": true
+        }
+      }
+    },
+    "hazardous_material": {
+      "type": "boolean",
+      "default": false,
+      "visible": {
+        "requires_shipping": {
+          "$eq": true
+        }
+      }
+    },
+    "fragile": {
+      "type": "boolean",
+      "default": false,
+      "visible": {
+        "requires_shipping": {
+          "$eq": true
+        }
+      }
+    },
+    "signature_required": {
+      "type": "boolean",
+      "default": false,
+      "visible": {
+        "requires_shipping": {
+          "$eq": true
+        }
+      }
+    }
+  }
+}

@@ -251,6 +251,7 @@ async function importSeedData() {
     vendor: ['find', 'findOne', 'findFeatured'],
     influencer: ['find', 'findOne', 'findFeatured', 'findVerifiedCreators'],
     buyer: ['find', 'findOne'],
+    product: ['find', 'findOne'],
   });
 
   // Create all entries
@@ -285,6 +286,7 @@ async function setupCustomRoles() {
       vendor: ['find', 'findOne', 'create', 'update', 'findByUsername', 'findByUser', 'getStats'],
       buyer: ['find', 'findOne'],
       influencer: ['find', 'findOne', 'findFeatured', 'findVerifiedCreators'],
+      product: ['find', 'findOne', 'create', 'update', 'delete', 'findByVendor', 'calculatePrice'],
     });
 
     // Create Influencer role  
@@ -292,6 +294,7 @@ async function setupCustomRoles() {
       influencer: ['find', 'findOne', 'create', 'update', 'findByUsername', 'findByUser', 'getStats'],
       vendor: ['find', 'findOne', 'findFeatured', 'findByStatus'],
       buyer: ['find', 'findOne'],
+      product: ['find', 'findOne', 'create', 'update', 'delete', 'findByInfluencer', 'linkProduct', 'getLinkedProducts', 'calculatePrice'],
     });
 
     // Create Buyer role
@@ -299,6 +302,7 @@ async function setupCustomRoles() {
       buyer: ['find', 'findOne', 'create', 'update', 'findByUser'],
       vendor: ['find', 'findOne', 'findFeatured'],
       influencer: ['find', 'findOne', 'findFeatured', 'findVerifiedCreators'],
+      product: ['find', 'findOne', 'calculatePrice'],
     });
 
     console.log('Custom roles setup completed');

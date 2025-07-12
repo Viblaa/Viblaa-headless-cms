@@ -52,7 +52,12 @@
     "default_address": {
       "type": "component",
       "repeatable": false,
-      "component": "shared.address"
+      "component": "shared.address",
+      "visible": {
+        "total_orders": {
+          "$gt": 0
+        }
+      }
     },
     "preferences": {
       "type": "json"
@@ -95,7 +100,11 @@
     },
     "payment_methods": {
       "type": "json",
-      "private": true
+      "visible": {
+        "account_status": {
+          "$eq": "active"
+        }
+      }
     },
     "communication_preferences": {
       "type": "json"
