@@ -1,0 +1,124 @@
+{
+  "collectionName": "components_shared_social_networks",
+  "info": {
+    "displayName": "Social Network",
+    "description": "Social media platform details for influencers"
+  },
+  "options": {},
+  "attributes": {
+    "platform": {
+      "type": "enumeration",
+      "enum": [
+        "instagram",
+        "tiktok",
+        "youtube",
+        "facebook",
+        "twitter",
+        "linkedin",
+        "pinterest",
+        "snapchat",
+        "twitch",
+        "discord",
+        "telegram",
+        "whatsapp",
+        "clubhouse",
+        "reddit",
+        "medium",
+        "substack",
+        "other"
+      ],
+      "required": false,
+      "default": "other"
+    },
+    "handle": {
+      "type": "string",
+      "required": false,
+      "maxLength": 100
+    },
+    "profile_url": {
+      "type": "string",
+      "required": false
+    },
+    "followers_count": {
+      "type": "biginteger",
+      "default": 0
+    },
+    "engagement_rate": {
+      "type": "decimal",
+      "min": 0,
+      "max": 100,
+      "default": 0
+    },
+    "verified": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_primary": {
+      "type": "boolean",
+      "default": false
+    },
+    "content_categories": {
+      "type": "json"
+    },
+    "posting_frequency": {
+      "type": "enumeration",
+      "enum": ["daily", "weekly", "bi-weekly", "monthly", "occasional"],
+      "default": "weekly"
+    },
+    "audience_age_range": {
+      "type": "json"
+    },
+    "audience_gender_split": {
+      "type": "json"
+    },
+    "audience_location": {
+      "type": "json"
+    },
+    "average_views": {
+      "type": "biginteger",
+      "default": 0
+    },
+    "average_likes": {
+      "type": "biginteger",
+      "default": 0
+    },
+    "average_comments": {
+      "type": "biginteger",
+      "default": 0
+    },
+    "average_shares": {
+      "type": "biginteger",
+      "default": 0
+    },
+    "collaboration_rate_post": {
+      "type": "decimal",
+      "default": 0
+    },
+    "collaboration_rate_story": {
+      "type": "decimal",
+      "default": 0
+    },
+    "collaboration_rate_video": {
+      "type": "decimal",
+      "default": 0
+    },
+    "collaboration_rate_live": {
+      "type": "decimal",
+      "default": 0
+    },
+    "last_updated": {
+      "type": "datetime"
+    },
+    "account_type": {
+      "type": "enumeration",
+      "enum": ["personal", "business", "creator"],
+      "default": "personal"
+    },
+    "niche_tags": {
+      "type": "json"
+    },
+    "media_samples": {
+      "type": "json"
+    }
+  }
+}

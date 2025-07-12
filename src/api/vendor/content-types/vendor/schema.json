@@ -1,0 +1,124 @@
+{
+  "kind": "collectionType",
+  "collectionName": "vendors",
+  "info": {
+    "singularName": "vendor",
+    "pluralName": "vendors",
+    "displayName": "Vendor",
+    "description": "Marketplace vendor/seller profile"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "business_name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255
+    },
+    "username": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "minLength": 3,
+      "maxLength": 30,
+      "regex": "^[a-zA-Z0-9_-]+$"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "contact_email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 20
+    },
+    "website": {
+      "type": "string"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "banner_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "address": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.address"
+    },
+    "commission_rate": {
+      "type": "decimal",
+      "default": 0.15,
+      "min": 0,
+      "max": 1
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["pending", "approved", "suspended", "rejected"],
+      "default": "pending",
+      "required": true
+    },
+    "verification_status": {
+      "type": "enumeration",
+      "enum": ["unverified", "verified", "rejected"],
+      "default": "unverified",
+      "required": true
+    },
+    "rating": {
+      "type": "decimal",
+      "min": 0,
+      "max": 5,
+      "default": 0
+    },
+    "total_sales": {
+      "type": "biginteger",
+      "default": 0
+    },
+    "joined_date": {
+      "type": "datetime"
+    },
+    "social_media": {
+      "type": "json"
+    },
+    "business_license": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "tax_id": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "bank_details": {
+      "type": "json",
+      "private": true
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "shipping_policy": {
+      "type": "richtext"
+    },
+    "return_policy": {
+      "type": "richtext"
+    },
+    "business_hours": {
+      "type": "json"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

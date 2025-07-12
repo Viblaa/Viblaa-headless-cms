@@ -11,6 +11,7 @@ async function seedExampleApp() {
   if (shouldImportSeedData) {
     try {
       console.log('Setting up the template...');
+      await setupCustomRoles();
       await importSeedData();
       console.log('Ready to go');
     } catch (error) {
@@ -22,6 +23,9 @@ async function seedExampleApp() {
       'Seed data has already been imported. We cannot reimport unless you clear your database first.'
     );
   }
+  
+  // Always ensure custom roles exist, even after first run
+  await ensureCustomRolesExist();
 }
 
 async function isFirstRun() {
@@ -244,6 +248,9 @@ async function importSeedData() {
     author: ['find', 'findOne'],
     global: ['find', 'findOne'],
     about: ['find', 'findOne'],
+    vendor: ['find', 'findOne', 'findFeatured'],
+    influencer: ['find', 'findOne', 'findFeatured', 'findVerifiedCreators'],
+    buyer: ['find', 'findOne'],
   });
 
   // Create all entries
@@ -268,6 +275,102 @@ async function main() {
   process.exit(0);
 }
 
+
+async function setupCustomRoles() {
+  console.log('Setting up custom roles...');
+  
+  try {
+    // Create Vendor role
+    await createRoleIfNotExists('Vendor', 'vendor', {
+      vendor: ['find', 'findOne', 'create', 'update', 'findByUsername', 'findByUser', 'getStats'],
+      buyer: ['find', 'findOne'],
+      influencer: ['find', 'findOne', 'findFeatured', 'findVerifiedCreators'],
+    });
+
+    // Create Influencer role  
+    await createRoleIfNotExists('Influencer', 'influencer', {
+      influencer: ['find', 'findOne', 'create', 'update', 'findByUsername', 'findByUser', 'getStats'],
+      vendor: ['find', 'findOne', 'findFeatured', 'findByStatus'],
+      buyer: ['find', 'findOne'],
+    });
+
+    // Create Buyer role
+    await createRoleIfNotExists('Buyer', 'buyer', {
+      buyer: ['find', 'findOne', 'create', 'update', 'findByUser'],
+      vendor: ['find', 'findOne', 'findFeatured'],
+      influencer: ['find', 'findOne', 'findFeatured', 'findVerifiedCreators'],
+    });
+
+    console.log('Custom roles setup completed');
+  } catch (error) {
+    console.error('Error setting up custom roles:', error);
+  }
+}
+
+async function createRoleIfNotExists(name, type, permissions) {
+  // Check if role already exists
+  const existingRole = await strapi.query('plugin::users-permissions.role').findOne({
+    where: { name },
+  });
+
+  if (existingRole) {
+    console.log(`Role '${name}' already exists`);
+    return existingRole;
+  }
+
+  // Create the role
+  const role = await strapi.query('plugin::users-permissions.role').create({
+    data: {
+      name,
+      description: `Custom ${name} role for marketplace`,
+      type,
+    },
+  });
+
+  // Create permissions for the role
+  const allPermissionsToCreate = [];
+  Object.keys(permissions).forEach((controller) => {
+    const actions = permissions[controller];
+    actions.forEach((action) => {
+      allPermissionsToCreate.push(
+        strapi.query('plugin::users-permissions.permission').create({
+          data: {
+            action: `api::${controller}.${controller}.${action}`,
+            role: role.id,
+          },
+        })
+      );
+    });
+  });
+
+  await Promise.all(allPermissionsToCreate);
+  console.log(`Created role '${name}' with permissions`);
+  return role;
+}
+
+async function ensureCustomRolesExist() {
+  try {
+    // Check and create roles if they don't exist
+    const vendorRole = await strapi.query('plugin::users-permissions.role').findOne({
+      where: { name: 'Vendor' },
+    });
+
+    const influencerRole = await strapi.query('plugin::users-permissions.role').findOne({
+      where: { name: 'Influencer' },
+    });
+
+    const buyerRole = await strapi.query('plugin::users-permissions.role').findOne({
+      where: { name: 'Buyer' },
+    });
+
+    if (!vendorRole || !influencerRole || !buyerRole) {
+      console.log('Some custom roles are missing, creating them...');
+      await setupCustomRoles();
+    }
+  } catch (error) {
+    console.error('Error ensuring custom roles exist:', error);
+  }
+}
 
 module.exports = async () => {
   await seedExampleApp();

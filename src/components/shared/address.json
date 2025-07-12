@@ -1,0 +1,41 @@
+{
+  "collectionName": "components_shared_addresses",
+  "info": {
+    "displayName": "Address",
+    "description": "Physical address component"
+  },
+  "options": {},
+  "attributes": {
+    "street_address": {
+      "type": "string",
+      "required": false,
+      "maxLength": 255
+    },
+    "city": {
+      "type": "string",
+      "required": false,
+      "maxLength": 100
+    },
+    "state": {
+      "type": "string",
+      "required": false,
+      "maxLength": 100
+    },
+    "postal_code": {
+      "type": "string",
+      "required": false,
+      "maxLength": 20
+    },
+    "country": {
+      "type": "string",
+      "required": false,
+      "maxLength": 100
+    },
+    "latitude": {
+      "type": "decimal"
+    },
+    "longitude": {
+      "type": "decimal"
+    }
+  }
+}

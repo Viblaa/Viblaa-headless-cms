@@ -1,0 +1,109 @@
+{
+  "kind": "collectionType",
+  "collectionName": "buyers",
+  "info": {
+    "singularName": "buyer",
+    "pluralName": "buyers",
+    "displayName": "Buyer",
+    "description": "Marketplace buyer/customer profile"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "first_name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "last_name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "display_name": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 20
+    },
+    "date_of_birth": {
+      "type": "date"
+    },
+    "gender": {
+      "type": "enumeration",
+      "enum": ["male", "female", "other", "prefer_not_to_say"],
+      "default": "prefer_not_to_say"
+    },
+    "profile_picture": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "addresses": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.address"
+    },
+    "default_address": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.address"
+    },
+    "preferences": {
+      "type": "json"
+    },
+    "wishlist": {
+      "type": "json"
+    },
+    "loyalty_points": {
+      "type": "integer",
+      "default": 0
+    },
+    "total_spent": {
+      "type": "decimal",
+      "default": 0
+    },
+    "total_orders": {
+      "type": "integer",
+      "default": 0
+    },
+    "customer_since": {
+      "type": "datetime"
+    },
+    "is_premium": {
+      "type": "boolean",
+      "default": false
+    },
+    "newsletter_subscribed": {
+      "type": "boolean",
+      "default": false
+    },
+    "marketing_consent": {
+      "type": "boolean",
+      "default": false
+    },
+    "account_status": {
+      "type": "enumeration",
+      "enum": ["active", "suspended", "deactivated"],
+      "default": "active",
+      "required": true
+    },
+    "payment_methods": {
+      "type": "json",
+      "private": true
+    },
+    "communication_preferences": {
+      "type": "json"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}
